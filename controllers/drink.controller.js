@@ -12,14 +12,17 @@
 const router = require('express').Router();
 const fetch = require('cross-fetch');
 
-const baseURL = `https://thecocktaildb.com/api/json/v1/1/search.php?i=`;
+const baseURL = `https://thecocktaildb.com/api/json/v1/1/`;
 
 
 // Search by ingredient 
-router.get('/posion', (req, res) => {
-const url = `${baseURL}${'vodka'}`
+router.post('/type', (req, res) => {
+console.log(req.body)
+const alcType=req.body.drink; // i.e. drill down for the actually type
+const url = `${baseURL}filter.php?i=${alcType}`
+console.log(url)
     fetch(url)
-   .then(res => res.json())
+        .then(res => res.json())
         .then(drinks => res.status(200).json( { message: `Found ${drinks.length} saved drinks!`, drinks }))
         .catch(err => res.status(500).json({ message: "Error: Not able to get your posion", error: err}))
 })
