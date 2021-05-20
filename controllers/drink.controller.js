@@ -48,4 +48,17 @@ router.get("/random", (req, res) => {
     );
 });
 
+//drink details
+router.get("/details/:id", (req, res) => {
+  const url = `${baseURL}lookup.php?i=${req.params.id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((drink) => res.status(200).json(drink))
+    .catch((err) =>
+      res
+        .status(500)
+        .json({ message: "Error: Not able to get your posion", error: err })
+    );
+});
+
 module.exports = router;
