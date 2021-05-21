@@ -15,6 +15,7 @@ router.post('/add', (req, res) => {
         drinkId: req.body.drinkId,
         drinkName: req.body.drinkName, // bcrypt.hashSync(req.body.password, 10)
         drinkThumb: req.body.drinkThumb,
+        rating: req.body.rating
     })
     .then((favDrink) => {
         // let token = jwt.sign({ id: favDrink.id }, process.env.SECRET, { expiresIn: '1d' })
@@ -48,7 +49,7 @@ router.delete('/remove/:id', validate, (req, res) => {
     .catch(err => res.status(500).json({message: "Something went wrong. Favorite drink not removed.", error: err}))
 })
 
-// UPDATE FAVORITE DRINK
+// UPDATE FAVORITE DRINK RATINGS
 // localhost:8080/favorites/2
 // router.put('/favorites/:id', validate, (req, res) => {
 //     // req.body will hold the new information

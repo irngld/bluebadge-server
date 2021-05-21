@@ -18,6 +18,10 @@ const Favorites = database.define('favorites', {
     drinkThumb: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 })
 

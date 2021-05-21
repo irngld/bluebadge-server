@@ -17,20 +17,23 @@ const baseURL = `https://thecocktaildb.com/api/json/v1/1/`;
 // Search by ingredient
 router.post("/type", (req, res) => {
   console.log(req.body);
-  const alcType = req.body.drink; // i.e. drill down for the actually type
+
+  const alcType = req.body.drink;                   // i.e. drill down for the actual type
   const url = `${baseURL}filter.php?i=${alcType}`;
+
   console.log(url);
+
   fetch(url)
     .then((res) => res.json())
     .then((drinks) =>
       res
         .status(200)
-        .json({ message: `Found ${drinks.length} saved drinks!`, drinks })
+        .json({ message: `Found ${drinks} saved drinks!`, drinks })
     )
     .catch((err) =>
       res
         .status(500)
-        .json({ message: "Error: Not able to get your posion", error: err })
+        .json({ message: "Error: Not able to get your poison", error: err })
     );
 });
 
@@ -44,7 +47,7 @@ router.get("/random", (req, res) => {
     .catch((err) =>
       res
         .status(500)
-        .json({ message: "Error: Not able to get your posion", error: err })
+        .json({ message: "Error: Not able to get your poison", error: err })
     );
 });
 
@@ -57,7 +60,7 @@ router.get("/details/:id", (req, res) => {
     .catch((err) =>
       res
         .status(500)
-        .json({ message: "Error: Not able to get your posion", error: err })
+        .json({ message: "Error: Not able to get your poison", error: err })
     );
 });
 //get list of ingredients
