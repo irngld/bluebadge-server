@@ -46,6 +46,7 @@ router.post('/login', (req, res) => {
             })
             function generateToken(user) {
                 let token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: '1d' })
+                console.log(token)
                 res.send({user, token})
             }
         }

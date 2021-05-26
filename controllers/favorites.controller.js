@@ -1,3 +1,4 @@
+// const cors = require('cors');
 const router = require('express').Router();
 const Favorites = require('../models/favorites');
 const validate = require('../middleware/validateSession');
@@ -9,7 +10,8 @@ router.get('/test', (req, res) => {
 
 
 // ADD A FAVORITE DRINK
-router.post('/add', (req, res) => {
+router.post('/add', validate, (req, res) => {
+    console.log(req.user);
     Favorites.create({
         userId: req.user.id, // CHANGE AS REQUIRED e.g. req.body.userId
         drinkId: req.body.drinkId,
@@ -19,7 +21,9 @@ router.post('/add', (req, res) => {
     })
     .then((favDrink) => {
         // let token = jwt.sign({ id: favDrink.id }, process.env.SECRET, { expiresIn: '1d' })
-        res.send({ favDrink });
+        res
+        .status(200)
+        .send({ favDrink });
     })
     .catch( err => res.status(500)
         .json({ 
