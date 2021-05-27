@@ -13,31 +13,53 @@ router.get('/test', (req, res) => {
 router.post('/add', validate, (req, res) => {
     console.log(req.user);
     // console.log(req.body);
-    Favorites.create({
-        userId: req.user.id,
-        drinkId: req.body.drinkId,
-        drinkName: req.body.drinkName, // bcrypt.hashSync(req.body.password, 10)
-        drinkThumb: req.body.drinkThumb,
-        rating: req.body.rating
-    })
-    .then((favDrink) => {
-        // let token = jwt.sign({ id: favDrink.id }, process.env.SECRET, { expiresIn: '1d' })
-        res
-        .status(200)
-        .send({ favDrink });
+    Favorites.findAll({
+        where : {
+            userId: req.user.id,
+            drinkId: req.body.drinkId,
+    }})
+    .then((existingFavorites) => {
+        if (existingFavorites === null || existingFavorites.length > 0 ) {
+            return res.status(200).send( existingFavorites[0] )
+        }
+        else {
+            Favorites.create({
+                userId: req.user.id,
+                drinkId: req.body.drinkId,
+                drinkName: req.body.drinkName, // bcrypt.hashSync(req.body.password, 10)
+                drinkThumb: req.body.drinkThumb,
+                rating: req.body.rating
+            })
+            .then((favDrink) => {
+                // let token = jwt.sign({ id: favDrink.id }, process.env.SECRET, { expiresIn: '1d' })
+                res
+                .status(200)
+                .send({ favDrink });
+            })
+            .catch( err => res.status(500)
+                .json({ 
+                    message: "Favorite drink not saved", 
+                    error: err
+                })
+            )
+        }
     })
     .catch( err => res.status(500)
-        .json({ 
-            message: "Favorite drink not saved", 
-            error: err
-        })
+                .json({ 
+                    message: "Favorite drink not saved", 
+                    error: err
+         })
     )
 })
 
 
 // GET FAVORITE DRINKS
-router.get('/show', (req, res) => {
-    Favorites.findAll()
+router.get('/show', validate, (req, res) => {
+    Favorites.findAll({
+        where: { 
+            userId: req.user.id
+        }
+    })
         .then(favDrink => res.status(200).json( { message: `Found ${favDrink.length} saved drinks!`, favDrink }))
         .catch(err => res.status(500).json({ message: "Error: No saved drinks", error: err}))
 })
