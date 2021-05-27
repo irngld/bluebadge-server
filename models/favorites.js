@@ -9,7 +9,8 @@ const Favorites = database.define('favorites', {
     },
     drinkId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     drinkName: {
         type: DataTypes.STRING,
