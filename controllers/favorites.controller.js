@@ -12,8 +12,9 @@ router.get('/test', (req, res) => {
 // ADD A FAVORITE DRINK
 router.post('/add', validate, (req, res) => {
     console.log(req.user);
+    // console.log(req.body);
     Favorites.create({
-        userId: req.user.id, // CHANGE AS REQUIRED e.g. req.body.userId
+        userId: req.user.id,
         drinkId: req.body.drinkId,
         drinkName: req.body.drinkName, // bcrypt.hashSync(req.body.password, 10)
         drinkThumb: req.body.drinkThumb,
