@@ -14,7 +14,7 @@ const fetch = require("cross-fetch");
 
 const baseURL = `https://thecocktaildb.com/api/json/v1/1/`;
 
-// Search by ingredient
+// Search by type
 router.post("/type", (req, res) => {
   console.log(req.body);
 
@@ -25,14 +25,8 @@ router.post("/type", (req, res) => {
 
   fetch(url)
     .then((res) => res.json())
-    .then((drinks) =>
-      res.status(200).json({ message: `Found ${drinks} saved drinks!`, drinks })
-    )
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Error: Not able to get your poison", error: err })
-    );
+    .then((drinks) => res.status(200).json({ message: `Found the following ${req.body.drink} drinks!`, drinks }))
+    .catch((err) => res.status(500).json({ message: "Error: Not able to get your poison", error: err }));
 });
 
 // Get random drink
@@ -42,11 +36,7 @@ router.get("/random", (req, res) => {
   fetch(url)
     .then((res) => res.json())
     .then((drinks) => res.status(200).json(drinks))
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Error: Not able to get your poison", error: err })
-    );
+    .catch((err) => res.status(500).json({ message: "Error: Not able to get your poison", error: err }));
 });
 
 //drink details
@@ -55,11 +45,7 @@ router.get("/details/:id", (req, res) => {
   fetch(url)
     .then((res) => res.json())
     .then((drink) => res.status(200).json(drink))
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Error: Not able to get your poison", error: err })
-    );
+    .catch((err) => res.status(500).json({ message: "Error: Not able to get your poison", error: err }));
 });
 //get list of ingredients
 router.get("/ingredients", (req, res) => {
@@ -68,11 +54,7 @@ router.get("/ingredients", (req, res) => {
   fetch(url)
     .then((res) => res.json())
     .then((drinks) => res.status(200).json(drinks))
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Error: Not able to get your posion", error: err })
-    );
+    .catch((err) => res.status(500).json({ message: "Error: Not able to get your posion", error: err }));
 });
 
 router.get("/drinkfact", async (req, res) => {
@@ -108,16 +90,8 @@ router.post("/name", (req, res) => {
   console.log(url);
   fetch(url)
     .then((res) => res.json())
-    .then((drinks) =>
-      res
-        .status(200)
-        .json({ message: `Found ${drinks.length} saved drinks!`, drinks })
-    )
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ message: "Error: Not able to get your posion", error: err })
-    );
+    .then((drinks) => res.status(200).json({ message: `Found the following ${req.body.drink} drinks!`, drinks }))
+    .catch((err) => res.status(500).json({ message: "Error: Not able to get your posion", error: err }));
 });
 
 module.exports = router;

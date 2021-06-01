@@ -60,13 +60,21 @@ router.get("/show", validate, (req, res) => {
 });
 
 // UPDATE FAVORITE DRINK RATINGS
-// localhost:8080/favorites/2
-// router.put('/favorites/:id', validate, (req, res) => {
-//     // req.body will hold the new information
-//     Favorites.update(req.body, { where: { id: req.params.id }})
-//         .then(updated => res.status(200).json({ message: "Update complete!", updated }))
-//         .catch(err => res.status(500).json({message: "Not updated.", error: err}))
-// })
+router.put("/rating/:id", validate, (req, res) => {
+  // req.body will hold the new information
+  console.log(`userId:${req.user.id}, drinkId:${req.params.id}, rating:${req.body.newRating}`, typeof req.body.newRating);
+  Favorites.update(
+    { rating: req.body.newRating },
+    {
+      where: {
+        userId: req.user.id,
+        drinkId: req.params.id,
+      },
+    }
+  )
+    .then((updated) => res.status(200).json({ message: "Update complete!", updated }))
+    .catch((err) => res.status(500).json({ message: "Not updated.", error: err }));
+});
 
 // DELETE FAVORITE DRINK
 router.delete("/remove/:id", validate, (req, res) => {
