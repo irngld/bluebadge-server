@@ -58,28 +58,17 @@ router.get("/ingredients", (req, res) => {
 });
 
 router.get("/drinkfact", async (req, res) => {
-  
-  try{
-    // const ingredientsUrl = `${baseURL}list.php?i=list`;
-    //  const ingredientResponse = await fetch(ingredientsUrl)
-    //  const data = await ingredientResponse.json();
+  try {
+    const filteredIngredients = ["Vodka", "Sloe Gin", "Wine", "Gin", "Scotch", "Tequila", "Brandy", "Bourbon", "Whiskey", "Cognac", "Ale", "Lager"];
+    const randomIngredient = filteredIngredients[Math.floor(Math.random() * filteredIngredients.length)];
 
-    //  const ingredients = data?.drinks
-    // if(ingredients == null || ingredients.length == 0)
-    //    return res.status(500).json({ message: "Error: Not able to retrieve ingredients for drink fact", error: err })
-    //    const bogusIngredients = ['water','lemon','milk','egg yolk','egg','lemonade','lime juice','grape juice','sugar','coffee liqueur','watermelon','carbonated water','chocolate liqueur','lemon vodka','demerara sugar','blended whiskey','orange','cocoa powder']
-       const filteredIngredients = ['Vodka', 'Sloe Gin', 'Wine', 'Gin', 'Scotch', 'Tequila', 'Brandy', 'Bourbon', 'Whiskey', 'Cognac', 'Ale', 'Lager']
-       const randomIngredient = filteredIngredients[Math.floor(Math.random() * filteredIngredients.length)];
-
-       const detailsUrl = `${baseURL}search.php?i=${randomIngredient}`;
-        const detailsResponse = await fetch(detailsUrl)
-        const detailData = await detailsResponse.json()
-        const ingredientDetails = detailData?.ingredients[0]
-       return res.status(200).json(ingredientDetails)
-    
-  }catch(err){
-    return res.status(500)
-    .json({ message: "Error: Not able to retrieve drink fact", error: err })
+    const detailsUrl = `${baseURL}search.php?i=${randomIngredient}`;
+    const detailsResponse = await fetch(detailsUrl);
+    const detailData = await detailsResponse.json();
+    const ingredientDetails = detailData && detailData.ingredients[0];
+    return res.status(200).json(ingredientDetails);
+  } catch (err) {
+    return res.status(500).json({ message: "Error: Not able to retrieve drink fact", error: err });
   }
 });
 
