@@ -10,12 +10,13 @@
 // /ingredients (list all ingredients as an array and filter on front end to allow autocomplete selection
 // import fetch from 'cross-fetch';
 const router = require("express").Router();
+const validate = require("../middleware/validateSession");
 const fetch = require("cross-fetch");
 
 const baseURL = `https://thecocktaildb.com/api/json/v1/1/`;
 
 // Search by type
-router.post("/type", (req, res) => {
+router.post("/type", validate, (req, res) => {
   console.log(req.body);
 
   const alcType = req.body.drink; // i.e. drill down for the actual type
@@ -30,7 +31,7 @@ router.post("/type", (req, res) => {
 });
 
 // Get random drink
-router.get("/random", (req, res) => {
+router.get("/random", validate, (req, res) => {
   const url = `${baseURL}random.php`;
   console.log(url);
   fetch(url)
@@ -40,7 +41,7 @@ router.get("/random", (req, res) => {
 });
 
 //drink details
-router.get("/details/:id", (req, res) => {
+router.get("/details/:id", validate, (req, res) => {
   const url = `${baseURL}lookup.php?i=${req.params.id}`;
   fetch(url)
     .then((res) => res.json())
@@ -48,7 +49,7 @@ router.get("/details/:id", (req, res) => {
     .catch((err) => res.status(500).json({ message: "Error: Not able to get your poison", error: err }));
 });
 //get list of ingredients
-router.get("/ingredients", (req, res) => {
+router.get("/ingredients", validate, (req, res) => {
   const url = `${baseURL}list.php?i=list`;
   console.log(url);
   fetch(url)
@@ -57,7 +58,7 @@ router.get("/ingredients", (req, res) => {
     .catch((err) => res.status(500).json({ message: "Error: Not able to get your posion", error: err }));
 });
 
-router.get("/drinkfact", async (req, res) => {
+router.get("/drinkfact", validate, async (req, res) => {
   try {
     const filteredIngredients = ["Vodka", "Sloe Gin", "Wine", "Gin", "Scotch", "Tequila", "Brandy", "Bourbon", "Whiskey", "Cognac", "Ale", "Lager"];
     const randomIngredient = filteredIngredients[Math.floor(Math.random() * filteredIngredients.length)];
@@ -72,7 +73,7 @@ router.get("/drinkfact", async (req, res) => {
   }
 });
 
-router.post("/name", (req, res) => {
+router.post("/name", validate, (req, res) => {
   console.log(req.body);
   const alcType = req.body.drink; // i.e. drill down for the actually type
   const url = `${baseURL}search.php?s=${alcType}`;
